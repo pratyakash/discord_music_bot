@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js');
 
-const commands = ['>play', '>pause', '>resume', '>stop', '>skip', '>queue', '>leave']
+const commands = ['>play', '>pause', '>resume', '>stop ', '>skip', '>queue', '>leave']
 
 const help = async (client, message) => {
     const _coms = commands.map(cmd => `\`To ${cmd.replace('>', '')} ${cmd}\n\``).join(' ');
