@@ -55,7 +55,7 @@ client.on('messageCreate', async message => {
     permissions = message.member.voice.channel.permissionsFor(message.client.user);
   }
 
-  if ((permissions && !permissions.has("CONNECT") || !permissions.has("SPEAK")) || !permission) return message.channel.send(`I need the permissions to join and speak in your voice channel!`)
+  if ((permissions && !permissions.has("CONNECT") || !permissions.has("SPEAK")) || !permissions) return message.channel.send(`I need the permissions to join and speak in your voice channel!`)
 
   const prefix = bot_config['prefix'];
 
