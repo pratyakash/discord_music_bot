@@ -181,7 +181,7 @@ async function pause(message, server_queue) {
 
     server_queue.connection.dispatcher.pause();
 
-    await send_message(message, `The song ${server_queue.songs[0]} is paused`);
+    await send_message(message, `The song ${server_queue.songs[0].title} is paused`);
 };
 
 async function resume(message, server_queue) {
@@ -191,7 +191,7 @@ async function resume(message, server_queue) {
 
     server_queue.connection.dispatcher.resume();
     
-    await send_message(message, `The song ${server_queue.songs[0]} is resumed`);
+    await send_message(message, `The song ${server_queue.songs[0].title} is resumed`);
 };
 
 module.exports.initiate_bot = initiate_bot;
