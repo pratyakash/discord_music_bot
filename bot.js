@@ -27,6 +27,15 @@ const initiate_bot = (client, prefix) => {
             skip(message, server_queue);
             return;
         }
+        else if (content.startsWith(`${prefix}hint`)) {
+            send_message(message, `**
+Commands are:- 
+1. Play >play
+2. Stop >stop
+3. Skip >skip
+            **`);
+            return;
+        }
         else {
             send_message(message, '[-] Invalid Command');
         }
