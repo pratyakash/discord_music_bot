@@ -69,13 +69,19 @@ client.on('messageCreate', async message => {
 
 
 client.distube
-  .on('playSong', (queue, song) =>
-    queue.textChannel.send(
-      `${client.emotes.play} | Playing \`${song.name}\` - \`${song.formattedDuration}\`\nRequested by: ${
-        song.user
-      }`
-    )
-  )
+  .on('playSong', (queue, song) => {
+    let embed = new Discord.MessageEmbed()
+      .setColor('#0xa6ff00')
+      .setTitle("Song")
+      .setDescription(client.emotes.speaker + ' ' + song.name)
+      .addFields(
+        { name: client.emotes.timer + ' ' + 'Duration', value: `${song.formattedDuration}`, inline: true },
+        { name: client.emotes.headphone + ' ' + 'Requested By', value: `${song.user.toString()}`, inline: true },
+	    )
+      .setFooter({ text: 'bullMusic [>help]'});
+
+    return queue.textChannel.send({ embeds: [embed] });
+  })
   .on('addSong', (queue, song) =>
     queue.textChannel.send(
       `${client.emotes.success} | Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`

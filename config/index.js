@@ -8,7 +8,11 @@ const bot_config = {
     "success": "☑️",
     "repeat": "🔁",
     "error": "❌",
-    "heart": "❤️"
+    "heart": "❤️",
+    "clock": "🕜",
+    "speaker": "🔊",
+    "timer": "⏱",
+    "headphone": "🎧"
   }
 }
 
