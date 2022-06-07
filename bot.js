@@ -158,7 +158,10 @@ async function stop(message, server_queue) {
 
     server_queue.songs = [];
     await send_message(message, '[+] Stopped');
-    server_queue.connection.dispatcher.end();
+
+    if (server_queue && server_queue.connection && server_queue.connection.dispatcher && server_queue.connection.dispatcher.end) {
+        server_queue.connection.dispatcher.end();
+    }
 };
 
 
@@ -196,7 +199,7 @@ async function resume(message, server_queue) {
     if (server_queue && server_queue.connection && server_queue.connection.dispatcher && server_queue.connection.dispatcher.resume) {
         server_queue.connection.dispatcher.resume();
     }
-    
+
     await send_message(message, `The song ${server_queue.songs[0].title} is resumed`);
 };
 
