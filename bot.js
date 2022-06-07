@@ -170,7 +170,9 @@ async function skip(message, server_queue) {
         await send_message(message, "Queue is empty leaving server");
     }
 
-    server_queue.connection.dispatcher.end();
+    if (server_queue && server_queue.connection && server_queue.connection.dispatcher && server_queue.connection.dispatcher.end) {
+        server_queue.connection.dispatcher.end();
+    }
 };
 
 
@@ -179,7 +181,9 @@ async function pause(message, server_queue) {
     if (!server_queue) return send_message(message, "There is no song that I could pause!");
     if (server_queue.connection.dispatcher.paused) return send_message(message, "This song is already paused!");
 
-    server_queue.connection.dispatcher.pause();
+    if (server_queue && server_queue.connection && server_queue.connection.dispatcher && server_queue.connection.dispatcher.pause) {
+        server_queue.connection.dispatcher.pause();
+    }
 
     await send_message(message, `The song ${server_queue.songs[0].title} is paused`);
 };
@@ -189,7 +193,9 @@ async function resume(message, server_queue) {
     if (!server_queue) return send_message(message, "There is no song that I could resume!");
     if (!server_queue.connection.dispatcher.paused) return send_message(message, "This song is not paused!");
 
-    server_queue.connection.dispatcher.resume();
+    if (server_queue && server_queue.connection && server_queue.connection.dispatcher && server_queue.connection.dispatcher.resume) {
+        server_queue.connection.dispatcher.resume();
+    }
     
     await send_message(message, `The song ${server_queue.songs[0].title} is resumed`);
 };
