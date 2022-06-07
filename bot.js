@@ -19,7 +19,6 @@ const initiate_bot = (client, prefix) => {
             return;
         }
         else if (content.startsWith(`${prefix}stop`)) {
-            send_message(message, '[+] Stopped');
             stop(message, server_queue);
             return;
         }
@@ -30,9 +29,9 @@ const initiate_bot = (client, prefix) => {
         else if (content.startsWith(`${prefix}hint`)) {
             send_message(message, `**
 Commands are:- 
-1. Play >play
-2. Stop >stop
-3. Skip >skip
+1. To play -> [>play]
+2. To stop [>stop]
+3. To skip [>skip]
             **`);
             return;
         }
@@ -120,7 +119,7 @@ const execute = async (message, server_queue, prefix) => {
 
 function play(guild, song) {
     const server_queue = queue.get(guild.id);
-    
+
     if (!song) {
         server_queue.voice_channel.leave();
         queue.delete(guild.id);
@@ -140,25 +139,26 @@ function play(guild, song) {
 };
 
 
-function stop(message, server_queue) {
-  if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to stop the music!");
-    
-  if (!server_queue) return send_message(message, "There is no song that I could stop!");
-    
-  server_queue.songs = [];
-  server_queue.connection.dispatcher.end();
+async function stop(message, server_queue) {
+    if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to stop the music!");
+
+    if (!server_queue) return send_message(message, "There is no song that I could stop!");
+
+    server_queue.songs = [];
+    await send_message(message, '[+] Stopped');
+    server_queue.connection.dispatcher.end();
 };
 
 
 async function skip(message, server_queue) {
-  if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to stop the music!");
-  if (!server_queue) return send_message(message, "There is no song that I could skip!");
+    if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to stop the music!");
+    if (!server_queue) return send_message(message, "There is no song that I could skip!");
 
-  if (server_queue && server_queue.songs.length === 1) {
-    await send_message(message, "Queue is empty leaving server");
-  }
+    if (server_queue && server_queue.songs.length === 1) {
+        await send_message(message, "Queue is empty leaving server");
+    }
 
-  server_queue.connection.dispatcher.end();
+    server_queue.connection.dispatcher.end();
 };
 
 module.exports.initiate_bot = initiate_bot;
