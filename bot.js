@@ -26,6 +26,10 @@ const initiate_bot = (client, prefix) => {
             pause(message, server_queue);
             return;
         }
+        else if (content.startsWith(`${prefix}resume`)) {
+            resume(message, server_queue);
+            return;
+        }
         else if (content.startsWith(`${prefix}skip`)) {
             skip(message, server_queue);
             return;
@@ -33,9 +37,11 @@ const initiate_bot = (client, prefix) => {
         else if (content.startsWith(`${prefix}hint`)) {
             send_message(message, `**
 Commands are:- 
-1. To play -> [>play]
-2. To stop -> [>stop]
-3. To skip -> [>skip]
+1. To play   -> [>play]
+2. To stop   -> [>stop]
+3. To skip   -> [>skip]
+4. To pause  -> [>pause]
+5. To resume -> [>resume]
             **`);
             return;
         }
@@ -61,62 +67,64 @@ const execute = async (message, server_queue, prefix) => {
     if (content) {
         args = message.content.replace(`${prefix}play `, '');
 
-        const voice_channel = message.member.voice.channel;
+        if (args && args.trim().length > 1) {
+            const voice_channel = message.member.voice.channel;
 
-        if (!voice_channel) {
-            return send_message(message, "You need to be in a voice channel to play music!");
-        }
+            if (!voice_channel) {
+                return send_message(message, "You need to be in a voice channel to play music!");
+            }
 
-        const permissions = voice_channel.permissionsFor(message.client.user)
+            const permissions = voice_channel.permissionsFor(message.client.user)
 
-        if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
-            return send_message(message, "I need the permissions to join and speak in your voice channel!");
-        }
+            if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
+                return send_message(message, "I need the permissions to join and speak in your voice channel!");
+            }
 
-        let video_from_youtube;
+            let video_from_youtube;
 
-        if (args.indexOf('www') == -1) {
-            video_from_youtube = await find_video(args);
-        }
-        else {
-            video_from_youtube = await yt_dl.getInfo(args);
-        }
+            if (args.indexOf('www') == -1) {
+                video_from_youtube = await find_video(args);
+            }
+            else {
+                video_from_youtube = await yt_dl.getInfo(args);
+            }
 
-        const song = {
-            title: video_from_youtube.title,
-            url: video_from_youtube.url ? video_from_youtube.url : video_from_youtube.video_url
-        };
-
-        if (!server_queue) {
-            const queue_cons = {
-                text_channel: message.channel,
-                voice_channel: voice_channel,
-                connection: null,
-                songs: [],
-                volume: 5,
-                playing: true
+            const song = {
+                title: video_from_youtube.title,
+                url: video_from_youtube.url ? video_from_youtube.url : video_from_youtube.video_url
             };
 
-            queue.set(message.guild.id, queue_cons);
+            if (!server_queue) {
+                const queue_cons = {
+                    text_channel: message.channel,
+                    voice_channel: voice_channel,
+                    connection: null,
+                    songs: [],
+                    volume: 5,
+                    playing: true
+                };
 
-            queue_cons.songs.push(song);
+                queue.set(message.guild.id, queue_cons);
+
+                queue_cons.songs.push(song);
 
 
-            try {
-                const connection = await voice_channel.join();
+                try {
+                    const connection = await voice_channel.join();
 
-                queue_cons.connection = connection;
+                    queue_cons.connection = connection;
 
-                play(message.guild, queue_cons.songs[0]);
-            } catch (err) {
-                queue.delete(message.guild.id);
+                    play(message.guild, queue_cons.songs[0]);
+                } catch (err) {
+                    queue.delete(message.guild.id);
 
-                return send_message(message, JSON.stringify(err));
+                    return send_message(message, JSON.stringify(err));
+                }
             }
-        }
-        else {
-            server_queue.songs.push(song);
-            return send_message(message, `${song.title} has been added to the queue!`);
+            else {
+                server_queue.songs.push(song);
+                return send_message(message, `${song.title} has been added to the queue!`);
+            }
         }
     }
 };
@@ -167,11 +175,23 @@ async function skip(message, server_queue) {
 
 
 async function pause(message, server_queue) {
-    if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to stop the music!");
+    if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to pause the music!");
     if (!server_queue) return send_message(message, "There is no song that I could pause!");
     if (server_queue.connection.dispatcher.paused) return send_message(message, "This song is already paused!");
 
     server_queue.connection.dispatcher.pause();
+
+    await send_message(message, `The song ${server_queue.songs[0]} is paused`);
+};
+
+async function resume(message, server_queue) {
+    if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to resume the music!");
+    if (!server_queue) return send_message(message, "There is no song that I could resume!");
+    if (!server_queue.connection.dispatcher.paused) return send_message(message, "This song is not paused!");
+
+    server_queue.connection.dispatcher.resume();
+    
+    await send_message(message, `The song ${server_queue.songs[0]} is resumed`);
 };
 
 module.exports.initiate_bot = initiate_bot;
