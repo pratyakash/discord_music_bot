@@ -45,6 +45,10 @@ client.once('ready', () => {
 client.on('messageCreate', async message => {
   if (message.author.bot || !message.guild)  return;
 
+  const prefix = bot_config['prefix'];
+
+  if (!message.content.startsWith(prefix)) return;
+
   const { member } = message;
 
   if (member && member.voice && !member.voice.channel) return message.channel.send(`You need to be in a voice channel to play music!`);
@@ -56,10 +60,6 @@ client.on('messageCreate', async message => {
   }
 
   if ((permissions && !permissions.has("CONNECT") || !permissions.has("SPEAK")) || !permissions) return message.channel.send(`I need the permissions to join and speak in your voice channel!`)
-
-  const prefix = bot_config['prefix'];
-
-  if (!message.content.startsWith(prefix)) return;
 
   const args = message.content.slice(prefix.length).trim().split(/ +/g)
   const command = args.shift().toLowerCase();
