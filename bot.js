@@ -173,6 +173,13 @@ async function skip(message, server_queue) {
         await send_message(message, "Queue is empty leaving server");
     }
 
+    if (server_queue && server_queue.songs) {
+        if (server_queue.connection && server_queue.connection.dispatcher && server_queue.connection.dispatcher.paused) {
+            await send_message(message, `The song ${server_queue.songs[0].title} is paused, first resumed it`);
+            return;
+        }
+    }
+
     if (server_queue && server_queue.connection && server_queue.connection.dispatcher && server_queue.connection.dispatcher.end) {
         server_queue.connection.dispatcher.end();
     }
