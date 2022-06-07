@@ -22,6 +22,10 @@ const initiate_bot = (client, prefix) => {
             stop(message, server_queue);
             return;
         }
+        else if (content.startsWith(`${prefix}pause`)) {
+            pause(message, server_queue);
+            return;
+        }
         else if (content.startsWith(`${prefix}skip`)) {
             skip(message, server_queue);
             return;
@@ -159,6 +163,15 @@ async function skip(message, server_queue) {
     }
 
     server_queue.connection.dispatcher.end();
+};
+
+
+async function pause(message, server_queue) {
+    if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to stop the music!");
+    if (!server_queue) return send_message(message, "There is no song that I could pause!");
+    if (server_queue.connection.dispatcher.paused) return send_message(message, "This song is already paused!");
+
+    server_queue.connection.dispatcher.pause();
 };
 
 module.exports.initiate_bot = initiate_bot;
