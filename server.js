@@ -1,4 +1,4 @@
-require('dotenv').config({ path: `${process.env.NODE_ENV}.env` });
+require('dotenv').config();
 
 const Discord = require('discord.js');
 
