@@ -43,7 +43,11 @@ client.once('ready', () => {
 })
 
 client.on('messageCreate', async message => {
-  if (message.author.bot || !message.guild) return
+  if (message.author.bot || !message.guild)  return message.channel.send(`You need to be in a voice channel to play music!`)
+
+  const permissions = message.member.voice.channel.permissionsFor(message.client.user);
+
+  if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) return message.channel.send(`I need the permissions to join and speak in your voice channel!`)
 
   const prefix = bot_config['prefix'];
 
