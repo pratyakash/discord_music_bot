@@ -15,8 +15,16 @@ const initiate_bot = (client, prefix) => {
         const server_queue = queue.get(message.guild.id);
 
         if (content.startsWith(`${prefix}play`)) {
-            send_message(message, '[+] Playing');
             execute(message, server_queue, prefix);
+            return;
+        }
+        else if (content.startsWith(`${prefix}stop`)) {
+            send_message(message, '[+] Stopped');
+            stop(message, server_queue);
+            return;
+        }
+        else if (content.startsWith(`${prefix}skip`)) {
+            skip(message, server_queue);
             return;
         }
         else {
@@ -120,6 +128,28 @@ function play(guild, song) {
 
     dispatcher.setVolumeLogarithmic(server_queue.volume / 5);
     server_queue.text_channel.send(`Start playing: **${song.title}**`);
-}
+};
+
+
+function stop(message, server_queue) {
+  if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to stop the music!");
+    
+  if (!server_queue) return send_message(message, "There is no song that I could stop!");
+    
+  server_queue.songs = [];
+  server_queue.connection.dispatcher.end();
+};
+
+
+async function skip(message, server_queue) {
+  if (!message.member.voice.channel) return send_message(message, "You have to be in a voice channel to stop the music!");
+  if (!server_queue) return send_message(message, "There is no song that I could skip!");
+
+  if (server_queue && server_queue.songs.length === 1) {
+    await send_message(message, "Queue is empty leaving server");
+  }
+
+  server_queue.connection.dispatcher.end();
+};
 
 module.exports.initiate_bot = initiate_bot;
