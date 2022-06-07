@@ -34,7 +34,7 @@ const initiate_bot = (client, prefix) => {
             skip(message, server_queue);
             return;
         }
-        else if (content.startsWith(`${prefix}hint`)) {
+        else if (content.startsWith(`${prefix}help`)) {
             send_message(message, `**
 Commands are:- 
 1. To play   -> [>play]
