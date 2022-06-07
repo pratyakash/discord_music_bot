@@ -30,8 +30,8 @@ const initiate_bot = (client, prefix) => {
             send_message(message, `**
 Commands are:- 
 1. To play -> [>play]
-2. To stop [>stop]
-3. To skip [>skip]
+2. To stop -> [>stop]
+3. To skip -> [>skip]
             **`);
             return;
         }
