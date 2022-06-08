@@ -1,6 +1,6 @@
 # discord_music_bot
 
-**Commands**
+**Commands:- **
 
 **Play [>play]**<br /><br />
 ![image](https://user-images.githubusercontent.com/13645745/172554454-f2b903c5-b085-4341-96b8-d0efa562b1d8.png)
