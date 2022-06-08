@@ -28,6 +28,9 @@ const init_distube_extra = client => {
                 } songs) to queue`
             )
         )
+        .on('error', (channel, e) => {
+            console.log('-> Error ', e);
+        })
         .on('empty', queue => queue.textChannel.send('Voice channel is empty! Leaving the channel...'))
         .on('searchNoResult', (message, query) =>
             message.channel.send(`${client.emotes.error} | No result found for \`${query}\`!`)
