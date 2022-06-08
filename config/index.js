@@ -1,7 +1,7 @@
 const bot_config = {
-    prefix: process.env.PREFIX,
-    bot_token: process.env.BOT_TOKEN,
-    "emoji": {
+  prefix: process.env.PREFIX,
+  bot_token: process.env.BOT_TOKEN,
+  "emoji": {
     "play": "▶️",
     "stop": "⏹️",
     "queue": "📄",

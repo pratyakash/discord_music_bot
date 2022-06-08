@@ -8,6 +8,8 @@ const { YtDlpPlugin } = require('@distube/yt-dlp')
 const { bot_config } = require('./config/index');
 
 const { execute_command } = require('./bot_commands');
+const { init_distube_extra } = require('./utils/distube_util');
+const { send_empty_message } = require('./utils');
 
 const client = new Discord.Client({
   intents: [
@@ -51,7 +53,7 @@ client.on('messageCreate', async message => {
 
   const { member } = message;
 
-  if (member && member.voice && !member.voice.channel) return message.channel.send(`You need to be in a voice channel to play music!`);
+  if (member && member.voice && !member.voice.channel) return send_empty_message(message, "You need to be in a voice channel to play music!");
 
   let permissions;
 
@@ -67,35 +69,4 @@ client.on('messageCreate', async message => {
   execute_command(command, client, message, args);
 });
 
-
-client.distube
-  .on('playSong', (queue, song) => {
-    let embed = new Discord.MessageEmbed()
-      .setColor('#0xa6ff00')
-      .setTitle("Song")
-      .setDescription(client.emotes.speaker + ' ' + song.name)
-      .addFields(
-        { name: client.emotes.timer + ' ' + 'Duration', value: `${song.formattedDuration}`, inline: true },
-        { name: client.emotes.headphone + ' ' + 'Requested By', value: `${song.user.toString()}`, inline: true },
-	    )
-      .setFooter({ text: 'bullMusic [>help]'});
-
-    return queue.textChannel.send({ embeds: [embed] });
-  })
-  .on('addSong', (queue, song) =>
-    queue.textChannel.send(
-      `${client.emotes.success} | Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`
-    )
-  )
-  .on('addList', (queue, playlist) =>
-    queue.textChannel.send(
-      `${client.emotes.success} | Added \`${playlist.name}\` playlist (${
-        playlist.songs.length
-      } songs) to queue`
-    )
-  )
-  .on('empty', queue => queue.textChannel.send('Voice channel is empty! Leaving the channel...'))
-  .on('searchNoResult', (message, query) =>
-    message.channel.send(`${client.emotes.error} | No result found for \`${query}\`!`)
-  )
-  .on('finish', queue => queue.textChannel.send('Finished!'))
+init_distube_extra(client);

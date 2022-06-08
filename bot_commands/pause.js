@@ -1,15 +1,36 @@
+const Discord = require('discord.js');
+
+const { COLORS } = require('../utils/constants');
+const { send_empty_message } = require('../utils');
+
 const pause = (client, message) => {
     const queue = client.distube.getQueue(message);
 
-    if (!queue) return message.channel.send(`${client.emotes.error} | There is nothing in the queue right now!`);
+    if (!queue) return send_empty_message(message, "There is nothing in the queue right now!");
 
     if (queue.paused) {
         queue.resume();
-        return message.channel.send('Resumed the song for you :)');
+
+         const embed = new Discord.MessageEmbed()
+            .setColor(COLORS.NEON_GREEN)
+            .setTitle(`Song Resumed`)
+            .setDescription(`Song [[  ${queue && queue.songs ? queue.songs[0].name : ' '}  ]] is resumed for you :)`)
+            .setFooter({ text: "bullMusic [>help]" });
+
+        return message.channel.send({ embeds: [embed] });
     }
 
     queue.pause();
-    message.channel.send(`Paused ${queue && queue.songs ? queue.songs[0].name : 'the song'} for you :)`);
+
+
+    const embed = new Discord.MessageEmbed()
+        .setColor(COLORS.YELLOW)
+        .setTitle(`Song Paused`)
+        .setDescription(`Song [[  ${queue && queue.songs ? queue.songs[0].name : ' '}  ]] is paused for you :)`)
+        .setFooter({ text: "bullMusic [>help]" });
+
+
+    message.channel.send({ embeds: [embed] });
 };
 
 module.exports.pause = pause;

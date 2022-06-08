@@ -7,38 +7,40 @@ const { queue } = require('./queue');
 const { leave } = require('./leave');
 const { help } = require('./help');
 
+const { COMMANDS } = require('../utils/constants');
+
 const execute_command = async (command, client, message, args) => {
 
     switch (command) {
-        case 'play':
+        case COMMANDS.PLAY:
             play(client, message, args);
             break;
 
-        case 'pause': 
+        case COMMANDS.PAUSE: 
             pause(client, message);
             break;
 
-        case 'resume':
+        case COMMANDS.RESUME:
             resume(client, message);
             break;
 
-        case 'skip':
+        case COMMANDS.SKIP:
             skip(client, message);
             break;
 
-        case 'stop':
+        case COMMANDS.STOP:
             stop(client, message);
             break;
 
-        case 'queue':
+        case COMMANDS.QUEUE:
             queue(client, message);
             break;
 
-        case 'leave':
+        case COMMANDS.LEAVE:
             leave(client, message);
             break;
 
-        case 'help':
+        case COMMANDS.HELP:
             help(client, message);
             break;
 

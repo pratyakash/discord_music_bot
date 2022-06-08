@@ -1,6 +1,6 @@
 {
   "name": "discord_music_bot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,13 @@
     "type": "git",
     "url": "git+https://github.com/pratyakash/discord_music_bot.git"
   },
-  "author": "",
+  "keywords": [
+    "discord-bot",
+    "discord",
+    "discord-spotify",
+    "dicord-soundcloud"
+  ],
+  "author": "Pratyakash Saini <pratyakash13@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/pratyakash/discord_music_bot/issues"
