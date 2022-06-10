@@ -31,6 +31,15 @@ const send_empty_message = (message_client, message) => {
 
 };
 
+
+const set_bot_activity = (client, message, type) => {
+    /* 
+        Types:- WATCHING, LISTENING, PLAYING, STREAMING
+    */
+    client.user.setActivity(message, { type: type });
+};
+
 module.exports.send_message = send_message;
 module.exports.get_embed_message = get_embed_message;
 module.exports.send_empty_message = send_empty_message;
+module.exports.set_bot_activity = set_bot_activity;

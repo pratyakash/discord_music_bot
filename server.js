@@ -9,7 +9,8 @@ const { bot_config } = require('./config/index');
 
 const { execute_command } = require('./bot_commands');
 const { init_distube_extra } = require('./utils/distube_util');
-const { send_empty_message } = require('./utils');
+const { send_empty_message, set_bot_activity } = require('./utils');
+const { STATUS } = require('./utils/constants');
 
 const client = new Discord.Client({
   intents: [
@@ -41,6 +42,8 @@ client.distube = new DisTube(client, {
 client.login(bot_config['bot_token']);
 
 client.once('ready', () => {
+  set_bot_activity(client, `${bot_config['prefix']}help`, STATUS.LISTEN)
+
   console.log(`${client.user.tag} is ready to play music.`)
 })
 

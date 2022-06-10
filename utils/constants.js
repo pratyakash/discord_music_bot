@@ -5,6 +5,12 @@ module.exports = {
         "YELLOW": "0xffea00",
         "RED": "0xff0000"
     },
+    "STATUS": {
+        "WATCH": "WATCHING",
+        "LISTEN": "LISTENING",
+        "PLAY": "PLAYING",
+        "STREAM": "STREAMING"
+    },
     "COMMANDS": {
         "PLAY": "play",
         "PAUSE": "pause",
