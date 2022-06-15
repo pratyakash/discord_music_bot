@@ -20,7 +20,8 @@ module.exports = {
         "LEAVE": "leave",
         "QUEUE": "queue",
         "HELP": "help",
-        "SERVER_STATUS": "bullsr"
+        "SERVER_STATUS": "bullsr",
+        "FORCE_STATUS_UPDATE": "frs"
     },
     "NO_OF_SONGS_IN_QUEUE": 5
 }

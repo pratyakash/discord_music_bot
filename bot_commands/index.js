@@ -8,14 +8,9 @@ const { leave } = require('./leave');
 const { help } = require('./help');
 
 const { COMMANDS } = require('../utils/constants');
+const { numer_of_servers, force_status_update } = require('../utils');
+const { bot_config } = require('../config/index');
 
-const numer_of_servers = client => {
-    try {
-        console.log(`[+] Server Count is ${client.guilds.cache.size}`);
-    } catch (error) {
-        console.log('[-] Error in Calculating Servers');
-    }
-}
 
 const execute_command = async (command, client, message, args) => {
 
@@ -52,11 +47,16 @@ const execute_command = async (command, client, message, args) => {
             help(client, message);
             break;
 
-        case COMMANDS.SERVER_STATUS:
+        case `${bot_config['admin_key']}_${COMMANDS.SERVER_STATUS}`:
             numer_of_servers(client);
             break;
 
+        case `${bot_config['admin_key']}_${COMMANDS.FORCE_STATUS_UPDATE}`:
+            force_status_update(client);
+            break;
+
         default:
+            console.log('---', command, `${bot_config['admin_key']}_${COMMANDS.SERVER_STATUS}`);
             break;
     }
 };
