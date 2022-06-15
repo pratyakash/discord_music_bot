@@ -36,6 +36,7 @@ const set_bot_activity = (client, message, type) => {
     /* 
         Types:- WATCHING, LISTENING, PLAYING, STREAMING
     */
+    console.log(`[+] Setting Activity ${type}`)
     client.user.setActivity(message, { type: type });
 };
 

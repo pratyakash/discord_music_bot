@@ -42,7 +42,11 @@ client.distube = new DisTube(client, {
 client.login(bot_config['bot_token']);
 
 client.once('ready', () => {
-  set_bot_activity(client, `${bot_config['prefix']}help`, STATUS.WATCH)
+  set_bot_activity(client, `${bot_config['prefix']}help`, STATUS.WATCH);
+
+  setInterval(() => {
+    set_bot_activity(client, `${bot_config['prefix']}help`, STATUS.WATCH);
+  }, bot_config['status_refresh_time'] * 60000);
 
   console.log(`${client.user.tag} is ready to play music.`)
 })
