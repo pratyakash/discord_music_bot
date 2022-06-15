@@ -19,7 +19,8 @@ module.exports = {
         "SKIP": "skip",
         "LEAVE": "leave",
         "QUEUE": "queue",
-        "HELP": "help"
+        "HELP": "help",
+        "SERVER_STATUS": "bullsr"
     },
     "NO_OF_SONGS_IN_QUEUE": 5
 }

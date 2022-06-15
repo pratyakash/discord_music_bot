@@ -9,6 +9,14 @@ const { help } = require('./help');
 
 const { COMMANDS } = require('../utils/constants');
 
+const numer_of_servers = client => {
+    try {
+        console.log(`[+] Server Count is ${client.guilds.cache.size}`);
+    } catch (error) {
+        console.log('[-] Error in Calculating Servers');
+    }
+}
+
 const execute_command = async (command, client, message, args) => {
 
     switch (command) {
@@ -16,7 +24,7 @@ const execute_command = async (command, client, message, args) => {
             play(client, message, args);
             break;
 
-        case COMMANDS.PAUSE: 
+        case COMMANDS.PAUSE:
             pause(client, message);
             break;
 
@@ -42,6 +50,10 @@ const execute_command = async (command, client, message, args) => {
 
         case COMMANDS.HELP:
             help(client, message);
+            break;
+
+        case COMMANDS.SERVER_STATUS:
+            numer_of_servers(client);
             break;
 
         default:
